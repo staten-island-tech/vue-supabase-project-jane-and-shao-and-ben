@@ -1,12 +1,7 @@
 import { ref, computed } from 'vue'
 import { defineStore } from 'pinia'
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'https://svdpqaqmcotuflvhbqim.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY
+export const supabase = createClient(supabaseUrl, supabaseKey)
 
-export const useCounterStore = defineStore('counter', () => {
-  const count = ref(0)
-  const doubleCount = computed(() => count.value * 2)
-  function increment() {
-    count.value++
-  }
-
-  return { count, doubleCount, increment }
-})
