@@ -1,5 +1,5 @@
 {
-  "name": "vue",
+  "name": "my-app",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -11,7 +11,6 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.42.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.21"
   },
