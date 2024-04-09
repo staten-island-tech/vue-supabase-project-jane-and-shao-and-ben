@@ -1,15 +1,18 @@
 <script setup>
-import { supabase } from './stores/counter';
+import { ref, onMounted } from 'vue'
+import { supabase } from './lib/supabaseClient'
+async function test() {
 
-let { data: account_information, error } = await supabase
+  let { data, error } = await supabase
   .from('account_information')
   .select('*')
-console.log(account_information)
+          
+console.log(data) 
+}
+test()
 </script>
 
 <template>
-
-
+  <ul>
+  </ul>
 </template>
-
-<style scoped></style>
