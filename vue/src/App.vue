@@ -16,6 +16,6 @@ onMounted(() => {
 
 <template>
   <ul>
-    <li v-for="account in accounts" :key="account.id">{{ account.balance }}</li>
+    <li v-for="account in account_infomation" :key="account.id">{{ account.balance }}</li>
   </ul>
 </template>
