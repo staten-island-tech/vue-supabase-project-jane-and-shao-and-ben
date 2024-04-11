@@ -2,19 +2,18 @@
 import { ref, onMounted } from 'vue'
 import { supabase } from './lib/supabaseClient'
 async function test() {
-
-  
 let { data: accountinformation, error } = await supabase
   .from('accountinformation')
-  .select('*')
-          
-          
+  .select('')
   console.log(accountinformation) 
   if (error) {
   console.error(error)
-}
-}
+}}
 test()
+const { data:signUp, error } = await supabase.auth.signUp({
+  email: 'example@email.com',
+  password: 'example-password',
+})
 </script>
 
 <template>
