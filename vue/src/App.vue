@@ -1,23 +1,23 @@
-<<<<<<< Updated upstream
-<script setup></script>
-
-<template></template>
-=======
 <script setup>
-import { createClient } from '@supabase/supabase-js'
-const supabaseUrl = 'https://svdpqaqmcotuflvhbqim.supabase.co'
-const supabaseKey = process.env.SUPABASE_KEY
-const supabase = createClient(supabaseUrl, supabaseKey)
-let { data: account_information, error } = await supabase
-  .from('account_information')
+import { ref, onMounted } from 'vue'
+import { supabase } from './lib/supabaseClient'
+async function test() {
+
+  
+let { data: accountinformation, error } = await supabase
+  .from('accountinformation')
   .select('*')
-console.log(account_information)
+          
+          
+  console.log(accountinformation) 
+  if (error) {
+  console.error(error)
+}
+}
+test()
 </script>
 
 <template>
-
-
+  <ul>
+  </ul>
 </template>
->>>>>>> Stashed changes
-
-<style scoped></style>
