@@ -17,6 +17,6 @@ const { data:signUp, error } = await supabase.auth.signUp({
 </script>
 
 <template>
-  <ul>
-  </ul>
+  <form action=""></form>
+
 </template>
