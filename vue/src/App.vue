@@ -1,21 +1,23 @@
+<template>
 <script setup>
 import { ref, onMounted } from 'vue'
 import { supabase } from './supabaseClient'
 
 const accounts = ref([])
 
-async function getAccount() {
-  const { data } = await supabase.from('account_infomation').select()
-  accounts.value = data
-}
 
-onMounted(() => {
-  getAccount()
-})
+import { createClient } from '@supabase/supabase-js'
+const supabaseUrl = 'https://svdpqaqmcotuflvhbqim.supabase.co'
+const supabaseKey = process.env.SUPABASE_KEY
+const supabase = createClient(supabaseUrl, supabaseKey)
+let { data: account_information, error } = await supabase
+  .from('account_information')
+  .select('*')
+console.log(account_information)
 </script>
 
-<template>
-  <ul>
-    <li v-for="account in account_infomation" :key="account.id">{{ account.balance }}</li>
-  </ul>
+
+
+
 </template>
+
