@@ -1,7 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { supabase } from './lib/supabaseClient'
-async function test() {
+async function fetch() {
 let { data: accountinformation, error } = await supabase
   .from('accountinformation')
   .select('')
@@ -9,11 +9,18 @@ let { data: accountinformation, error } = await supabase
   if (error) {
   console.error(error)
 }}
-test()
-const { data:signUp, error } = await supabase.auth.signUp({
-  email: 'example@email.com',
+fetch()
+const email = ref("twin")
+const pass = ref("sies")
+
+
+const { data, error } = await supabase.auth.signUp({
+  email: 'exampleadsfsdf@email.com',
   password: 'example-password',
 })
+
+
+
 </script>
 
 <template>
