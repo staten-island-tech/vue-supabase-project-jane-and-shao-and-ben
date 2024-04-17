@@ -1,6 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue'
-import supabase
+import { supabase } from '@/lib/supabaseClient';
 async function fetch() {
 let { data: accountinformation, error } = await supabase
   .from('accountinformation')
