@@ -19,10 +19,10 @@ async function sign() {
   email: emails.value,
     password: pass.value,
   })
-console.log(emails.value, pass.value)
+console.log(emails.value, pass.value, "help")
 }
 import { RouterLink, RouterView } from 'vue-router'
-
+ 
 
 
 
