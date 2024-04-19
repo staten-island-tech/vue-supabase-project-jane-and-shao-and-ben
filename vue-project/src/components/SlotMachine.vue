@@ -1,9 +1,10 @@
 <template>
   <div class="slot-machine">
     <button @click="spin">Spin</button>
-    <img :src="data[slot1].image">
-    <img :src="data[slot2].image">
-    <img :src="data[slot3].image">
+    <!-- <h2>{{ name }} a</h2>
+    <img :src="data2[slot1].image">
+    <img :src="data2[slot2].image">
+    <img :src="data2[slot3].image"> -->
   </div>
 </template>
 
@@ -16,7 +17,7 @@ export default {
       slot1: 0,
       slot2: 0,
       slot3: 0,
-      data: [
+      data2: [
         {
           name: "Lemon",
           value: 5,
@@ -56,4 +57,5 @@ export default {
 </script>
 
 <style scoped>
+
 </style>
