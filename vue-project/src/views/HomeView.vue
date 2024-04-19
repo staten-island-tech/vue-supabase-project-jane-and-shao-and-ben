@@ -19,10 +19,10 @@ async function sign() {
   email: emails.value,
     password: pass.value,
   })
-console.log(emails.value, pass.value)
+console.log(emails.value, pass.value, "help")
 }
 import { RouterLink, RouterView } from 'vue-router'
-
+ 
 
 
 
@@ -34,14 +34,20 @@ import { RouterLink, RouterView } from 'vue-router'
 
 
 <template>
+  <h1 class="flex justify-center m-auto text-4xl mt-10 mb-[-15%] underline">Sign Up</h1>
   <form action="" class="flex justify-center m-auto h-screen items-center">
     <label for="" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">Enter Email</label>
     <input type="text" v-model="emails" class="border-black border-2 mr-10">
     <label for="" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">Enter 6+ digit password</label>
     <input type="text" name="" id="" v-model="pass" class="border-black border-2 mr-10">
-    <button type="submit" @click="sign" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
+    <button type="submit" @click.prevent="sign" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
       <RouterLink to="/about" class="]"> Graph 1</RouterLink>
     </button>
   </form>
+  <div class="signin flex justify-center m-auto flex-col w-1/2 items-center">
+    <h2 class="mb-2">Already Have an account?</h2>
+    <button class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50 w-1/4"><RouterLink to="/signin" class="flex grow text-center justify-center m-auto">Sign In!</RouterLink></button>
+  </div>
+ 
   <RouterView/>
 </template>

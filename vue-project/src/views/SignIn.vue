@@ -1,0 +1,31 @@
+<template>
+    <div>
+        <form action="" class="flex justify-center m-auto h-screen items-center">
+    <label for="" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">Enter Email</label>
+    <input type="text" v-model="emails" class="border-black border-2 mr-10">
+    <label for="" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">Enter Password</label>
+    <input type="text" name="" id="" v-model="pass" class="border-black border-2 mr-10">
+    <button type="submit" @click.prevent="signInWithEmail" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
+    sign in
+    </button>
+  </form>
+    </div>
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import { supabase } from '@/lib/supabaseClient';
+const email = ref("")
+const password = ref("")
+async function signInWithEmail() {
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.value,
+    password: password.value,
+  })
+}
+
+</script>
+
+<style lang="" scoped>
+
+</style>
