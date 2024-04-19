@@ -1,10 +1,10 @@
 <template>
   <div class="slot-machine">
     <button @click="spin">Spin</button>
-    <!-- <h2>{{ name }} a</h2>
+     <h2>{{ name }} a</h2>
     <img :src="data2[slot1].image">
     <img :src="data2[slot2].image">
-    <img :src="data2[slot3].image"> -->
+    <img :src="data2[slot3].image">
   </div>
 </template>
 
