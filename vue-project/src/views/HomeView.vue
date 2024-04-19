@@ -41,9 +41,13 @@ import { RouterLink, RouterView } from 'vue-router'
     <label for="" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">Enter 6+ digit password</label>
     <input type="text" name="" id="" v-model="pass" class="border-black border-2 mr-10">
     <button type="submit" @click.prevent="sign" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
-      testtest
+      <RouterLink to="/about" class="]"> Graph 1</RouterLink>
     </button>
   </form>
-  <h2>Already Have an account?</h2>
+  <div class="signin flex justify-center m-auto flex-col w-1/2 items-center">
+    <h2 class="mb-2">Already Have an account?</h2>
+    <button class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50 w-1/4"><RouterLink to="/signin" class="flex grow text-center justify-center m-auto">Sign In!</RouterLink></button>
+  </div>
+ 
   <RouterView/>
 </template>
