@@ -2,8 +2,8 @@
   <div>
     <div class="wrapper flex flex-row justify-center m-auto w-full mt-20">
       <nav class="flex justify-center m-auto">
-        <button class="bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
-          <RouterLink to="/about" class="]">Bank</RouterLink>
+        <button v-if="login.login===true" class="bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
+          <RouterLink to="/bank" class="]">Bank</RouterLink>
         </button>
       </nav>
     </div>
