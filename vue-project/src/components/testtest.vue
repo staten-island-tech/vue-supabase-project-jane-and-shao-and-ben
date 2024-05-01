@@ -1,11 +1,11 @@
 <template>
-  <div>
-      <testtest/>
-  </div>
+    <div>
+test
+    </div>
 </template>
 
 <script setup>
-import testtest from '@/components/testtest.vue';
+
 </script>
 
 <style lang="scss" scoped>
