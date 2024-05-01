@@ -16,6 +16,8 @@
 <script setup>
 import { ref } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
+import { isLogin } from '@/stores/counter';
+const login = isLogin()
 const emails = ref("")
 const passwords = ref("")
 async function signInWithEmail() {
@@ -23,6 +25,8 @@ async function signInWithEmail() {
     email: emails.value,
     password: passwords.value,
   })
+  login.changeY()
+  console.log(login.login)
   if (error) {
     alert("Account not found!")
   }

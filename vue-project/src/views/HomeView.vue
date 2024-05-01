@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { supabase } from '@/lib/supabaseClient';
+import { isLogin } from '@/stores/counter';
+const login = isLogin()
 async function fetch() {
 let { data: accountinformation, error } = await supabase
   .from('accountinformation')
@@ -19,6 +21,8 @@ async function sign() {
   email: emails.value,
     password: pass.value,
   })
+  login.changeY(  )
+  console.log(login.login)
 console.log(emails.value, pass.value, "help")
 }
 import { RouterLink, RouterView } from 'vue-router'
@@ -41,7 +45,7 @@ import { RouterLink, RouterView } from 'vue-router'
     <label for="" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">Enter 6+ digit password</label>
     <input type="text" name="" id="" v-model="pass" class="border-black border-2 mr-10">
     <button type="submit" @click.prevent="sign" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
-      <RouterLink to="/signin" class="]">Sign Up</RouterLink>
+      <RouterLink to="/about" class="]">Sign Up</RouterLink>
     </button>
   </form>
   <div class="signin flex justify-center m-auto flex-col w-1/2 items-center">
