@@ -27,7 +27,8 @@ async function signout() {
   console.log(login.login)
 }
 function bank() {
-  where.bank===true
+  where.bank = true
+  console.log(where.bank)
 }
 </script>
 
