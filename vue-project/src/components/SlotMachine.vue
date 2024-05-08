@@ -60,7 +60,7 @@ export default {
       
       if (this.slot1 === this.slot2 && this.slot2 === this.slot3) {
         const winValue = this.data2[this.slot1].value;
-        this.winningMessage = `You win ${winValue}!`;
+        this.winningMessage = `You win $${winValue}!`;
       } else {
         this.winningMessage = "";
       }
