@@ -1,17 +1,20 @@
 <template>
   <div class="slot-machine">
-    <button class = "buttn" @click="spin">Spin</button>
-     <h2>{{ name }} a</h2>
-     <div class='reel'>
-    <img :src="data2[slot1].image">
-    <img :src="data2[slot2].image">
-    <img :src="data2[slot3].image">
-  </div>
+    <button class="buttn" @click="spin">Spin</button>
+    <h2>{{ name }} a</h2>
+    <div class='reel'>
+      <img :src="data2[slot1].image">
+      <img :src="data2[slot2].image">
+      <img :src="data2[slot3].image">
+    </div>
+    <div v-if="winningMessage">{{ winningMessage }}</div>
   </div>
 </template>
 
+
 <script>
 import { ref } from 'vue'
+
 
 export default {
   data() {
@@ -45,7 +48,8 @@ export default {
           value: 50,
           image: "https://cdn4.iconfinder.com/data/icons/casino-games/512/bar-512.png"
         }
-      ]
+      ],
+      winningMessage: ""
     }
   },
   methods: {
@@ -53,13 +57,20 @@ export default {
       this.slot1 = Math.floor(Math.random() * this.data2.length);
       this.slot2 = Math.floor(Math.random() * this.data2.length);
       this.slot3 = Math.floor(Math.random() * this.data2.length);
+      
+      if (this.slot1 === this.slot2 && this.slot2 === this.slot3) {
+        const winValue = this.data2[this.slot1].value;
+        this.winningMessage = `You win ${winValue}!`;
+      } else {
+        this.winningMessage = "";
+      }
     }
   }
 }
 </script>
 
-<style scoped>
 
+<style scoped>
 .reel {
   display: flex;
   flex-direction: row;
@@ -70,16 +81,12 @@ export default {
   width: 200px;
   height: 150px;
 }
-
-
 .slot-machine {
   display: flex;
   flex-direction: column;
   align-items: center;
   margin-top: 20px;
 }
-
-
 .buttn {
   padding: 10px 20px;
   background-color: #4CAF50;
@@ -90,16 +97,13 @@ export default {
   font-size: 16px;
   margin-bottom: 20px;
 }
-
-
 .buttn:hover {
   background-color: #45a049;
 }
-
-
 h2 {
   font-size: 24px;
   margin-bottom: 10px;
 }
 </style>
+
 
