@@ -8,7 +8,7 @@
         <button class="bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
           <RouterLink to="/about" class="]"> Graph 1</RouterLink>
         </button>
-        <button class="bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
+        <button class="ml-10 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
           <RouterLink to="/slots" class="]"> Slots</RouterLink>
         </button>
       </nav>

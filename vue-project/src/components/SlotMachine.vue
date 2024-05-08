@@ -16,9 +16,9 @@ import { ref } from 'vue'
 export default {
   data() {
     return {
-      slot1: 3,
-      slot2: 2,
-      slot3: 3,
+      slot1: 0,
+      slot2: 0,
+      slot3: 1,
       data2: [
         {
           name: "Lemon",
