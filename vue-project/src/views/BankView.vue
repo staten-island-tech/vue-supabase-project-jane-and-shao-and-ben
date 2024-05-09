@@ -15,7 +15,7 @@
             </svg>
           </div>
           <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Account Id (Four Digits)</h2>
-          <p class="leading-relaxed text-base">{{ accid }}</p>
+          <p class="leading-relaxed text-base mb-4">{{ accid }}</p>
         </div>
       </div>
       <div class="xl:w-1/3 md:w-1/2 p-4">
@@ -28,7 +28,7 @@
             </svg>
           </div>
           <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Account Balance</h2>
-          <p class="leading-relaxed text-base">${{bal}}</p>
+          <p class="leading-relaxed text-base mb-4">${{bal}}</p>
         </div>
       </div>
       <div class="xl:w-1/3 md:w-1/2 p-4">
@@ -40,7 +40,7 @@
             </svg>
           </div>
           <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Total Bets</h2>
-          <p class="leading-relaxed text-base">${{ totalb }}</p>
+          <p class="leading-relaxed text-base mb-4">${{ totalb }}</p>
         </div>
       </div>
       <div class="xl:w-1/3 md:w-1/2 p-4">
@@ -51,7 +51,7 @@
             </svg>
           </div>
           <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Total Winnings</h2>
-          <p class="leading-relaxed text-base">${{ totalw }}</p>
+          <p class="leading-relaxed text-base mb-4">${{ totalw }}</p>
         </div>
       </div>
       <div class="xl:w-1/3 md:w-1/2 p-4">
@@ -62,7 +62,7 @@
             </svg>
           </div>
           <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Total Losses</h2>
-          <p class="leading-relaxed text-base">${{ totall }}</p>
+          <p class="leading-relaxed text-base mb-4">${{ totall }}</p>
         </div>
       </div>
       <div class="xl:w-1/3 md:w-1/2 p-4">
@@ -73,11 +73,13 @@
             </svg>
           </div>
           <h2 class="text-lg text-gray-900 font-medium title-font mb-2">Add Money</h2>
+          <div class="test flex flex-row">
           <input class="leading-relaxed text-base border-2 border-black rounded-lg text-center" type="number" v-model="money"></input>
+          <button class="flex mx-auto text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" @click="addmoney">Button</button>
         </div>
       </div>
+      </div>
     </div>
-    <button class="flex mx-auto mt-16 text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" @click="addmoney">Button</button>
   </div>
 </section>
 </div>
