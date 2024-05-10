@@ -2,8 +2,8 @@
   <div>Roulette</div>
 </template>
 
-<script>
-import Roulette.vue
+<script setup>
+import Roulette from "./views/RouletteView.vue";
 </script>
 
 <style lang="scss" scoped></style>
