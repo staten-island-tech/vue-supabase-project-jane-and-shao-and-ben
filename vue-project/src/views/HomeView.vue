@@ -23,14 +23,17 @@ async function sign() {
   })
   if (!error) {
     login.changeY()
-    router.push({path:'/signin'})    
+    router.push({path:'/about'})    
   }
   console.log(login.login)
 console.log(emails.value, pass.value, "help")
 }
+function move() {
+  router.push({ path:'/signin'})
+}
 import { RouterLink, RouterView } from 'vue-router'
 import router from '@/router';
- 
+
 
 
 
@@ -56,7 +59,7 @@ import router from '@/router';
         Sign Up
       </button>
       <p class="text-xs text-gray-500 mt-3 justify-center m-auto mb-2">Already have an account?</p>
-      <button class="text-white bg-indigo-500 border-0 py-1 px-6 justify-center m-auto focus:outline-none hover:bg-indigo-600 rounded text-lg w-1/2" @click.prevent="sign">
+      <button class="text-white bg-indigo-500 border-0 py-1 px-6 justify-center m-auto focus:outline-none hover:bg-indigo-600 rounded text-lg w-1/2" @click.prevent="move">
         <RouterLink to="/signin" class="]">Sign In</RouterLink>
       </button>
 

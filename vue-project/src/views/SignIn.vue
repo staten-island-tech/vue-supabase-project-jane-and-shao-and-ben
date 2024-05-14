@@ -22,7 +22,7 @@
                     </div>
                     <div class="mb-6">
                         <button type="button" class="w-full px-3 py-4 text-white bg-indigo-500 rounded-md focus:bg-indigo-600 focus:outline-none" @click.prevent="signInWithEmail()">
-                          <RouterLink to="/about" class="]">Sign In</RouterLink>
+                          Sign In
                         </button>
                     </div>
                     <p class="text-sm text-center text-gray-400">Don&#x27;t have an account yet? <a href="" class="text-indigo-400 focus:outline-none focus:underline focus:text-indigo-500 dark:focus:border-indigo-800">
@@ -37,6 +37,7 @@
 </template>
 
 <script setup>
+import router from '@/router';
 import { ref } from 'vue';
 import { supabase } from '@/lib/supabaseClient';
 import { isLogin } from '@/stores/counter';
@@ -48,10 +49,14 @@ async function signInWithEmail() {
     email: emails.value,
     password: passwords.value,
   })
-  login.changeY()
-  console.log(login.login)
   if (error) {
     alert("Account not found!")
+  } 
+  else {
+    login.changeY()
+    console.log(login.login)
+    router.push({path:'/about'})    
+  
   }
 }
 
