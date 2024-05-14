@@ -21,12 +21,19 @@ async function sign() {
   email: emails.value,
     password: pass.value,
   })
-  login.changeY(  )
+  if (!error) {
+    login.changeY()
+    router.push({path:'/about'})    
+  }
   console.log(login.login)
 console.log(emails.value, pass.value, "help")
 }
+function move() {
+  router.push({ path:'/signin'})
+}
 import { RouterLink, RouterView } from 'vue-router'
- 
+import router from '@/router';
+
 
 
 
@@ -38,20 +45,24 @@ import { RouterLink, RouterView } from 'vue-router'
 
 
 <template>
-  <h1 class="flex justify-center m-auto text-4xl mt-10 mb-[-15%] underline">Sign Up</h1>
-  <form action="" class="flex justify-center m-auto h-screen items-center mb-[-20%]">
-    <label for="" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">Enter Email</label>
-    <input type="text" v-model="emails" class="border-black border-2 mr-10">
-    <label for="" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">Enter 6+ digit password</label>
-    <input type="text" name="" id="" v-model="pass" class="border-black border-2 mr-10">
-    <button type="submit" @click.prevent="sign" class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50">
-      <RouterLink to="/about" class="]">Sign Up</RouterLink>
-    </button>
-  </form>
-  <div class="signin flex justify-center m-auto flex-col w-1/2 items-center">
-    <h2 class="mb-2">Already Have an account?</h2>
-    <button class="mr-2 bg-slate-300 border-2 border-black hover:bg-slate-600 hover:text-gray-50 w-1/4"><RouterLink to="/signin" class="flex grow text-center justify-center m-auto">Sign In!</RouterLink></button>
-  </div>
- 
+  <div class="lg:w-2/6 md:w-1/2 bg-gray-100 rounded-lg p-8 flex flex-col md:m-auto w-full mt-[50%]">
+      <h2 class="text-gray-900 text-lg font-medium title-font mb-5">Sign Up</h2>
+      <div class="relative mb-4">
+        <label for="full-name" class="leading-7 text-sm text-gray-600">Email Password</label>
+        <input v-model="emails" type="email" id="full-name" name="full-name" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+      <div class="relative mb-4">
+        <label for="email" class="leading-7 text-sm text-gray-600">Password</label>
+        <input v-model="pass" type="text" id="email" name="email" class="w-full bg-white rounded border border-gray-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 text-base outline-none text-gray-700 py-1 px-3 leading-8 transition-colors duration-200 ease-in-out">
+      </div>
+      <button class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg" @click.prevent="sign">
+        Sign Up
+      </button>
+      <p class="text-xs text-gray-500 mt-3 justify-center m-auto mb-2">Already have an account?</p>
+      <button class="text-white bg-indigo-500 border-0 py-1 px-6 justify-center m-auto focus:outline-none hover:bg-indigo-600 rounded text-lg w-1/2" @click.prevent="move">
+        <RouterLink to="/signin" class="]">Sign In</RouterLink>
+      </button>
+
+    </div>
   <RouterView/>
 </template>
