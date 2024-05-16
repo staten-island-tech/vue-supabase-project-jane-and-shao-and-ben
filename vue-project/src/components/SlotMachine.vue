@@ -1,7 +1,8 @@
 <template>
   <div class="slot-machine">
+    <h2>SLOTS</h2>
+    <h3>each spin is $.50</h3>
     <button class="buttn" @click="spin">Spin</button>
-    <h2>{{ name }} a</h2>
     <div class='reel'>
       <img :src="data2[slot1].image">
       <img :src="data2[slot2].image">
@@ -102,6 +103,10 @@ export default {
 }
 h2 {
   font-size: 24px;
+  margin-bottom: 10px;
+}
+h3 {
+  font-size: 15px;
   margin-bottom: 10px;
 }
 </style>
