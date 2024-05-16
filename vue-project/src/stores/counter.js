@@ -16,3 +16,14 @@ export const isLogin = defineStore('login', {
     }
   },
 })
+export const whichthing = defineStore('place', {
+  state: () => {
+    return {
+      bank: false,
+      slots: false,
+      roulette: false,
+      blackjack: false,
+      home: true,
+    }
+  }
+})
