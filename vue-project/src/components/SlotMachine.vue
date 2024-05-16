@@ -1,7 +1,6 @@
 <template>
   <div class="slot-machine">
-    <button class="buttn" @click="spin">Spin</button>
-    <h2>{{ name }} a</h2>
+    <button class="buttn" @click="spin">Spin: $100</button>
     <div class='reel'>
       <img :src="data2[slot1].image">
       <img :src="data2[slot2].image">
@@ -14,7 +13,8 @@
 
 <script>
 import { ref } from 'vue'
-
+import { balancefunc } from '@/stores/counter';
+import { supabase } from '@/lib/supabaseClient';
 
 export default {
   data() {
@@ -25,27 +25,27 @@ export default {
       data2: [
         {
           name: "Lemon",
-          value: 5,
+          value: 50,
           image: "https://cdn4.iconfinder.com/data/icons/slot-machines/512/Lemon-512.png"
         },
         {
           name: "Melon",
-          value: 10,
+          value: 100,
           image: "https://cdn4.iconfinder.com/data/icons/slot-machines/512/Watermelon-512.png"
         },
         {
           name: "Grapes",
-          value: 15,
+          value: 150,
           image: "https://cdn4.iconfinder.com/data/icons/slot-machines/512/Grapes-512.png"
         },
         {
           name: "Cherry",
-          value: 25,
+          value: 250,
           image: "https://cdn4.iconfinder.com/data/icons/slot-machines/512/Cherry-512.png"
         },
         {
           name: "Bar",
-          value: 50,
+          value: 500,
           image: "https://cdn4.iconfinder.com/data/icons/casino-games/512/bar-512.png"
         }
       ],
@@ -53,17 +53,40 @@ export default {
     }
   },
   methods: {
-    spin() {
+    async spin() {
       this.slot1 = Math.floor(Math.random() * this.data2.length);
       this.slot2 = Math.floor(Math.random() * this.data2.length);
       this.slot3 = Math.floor(Math.random() * this.data2.length);
-      
+      const bal = ref()
+      const user = await supabase.auth.getUser() //pulls user instance
+      const balance = balancefunc()
+      const reduce = ref(100)
+      let { data: accountinfo2, err } = await supabase //calls table
+        .from('accountinformation') //specifies table
+        .select("*") //selects all rows
+        .eq('id', user.data.user.id) //selects row that contains the user id 
+        bal.value = accountinfo2[0].balance //updates variables
+      const rlmoney = ref(bal.value - reduce.value) //reduce values 
+      console.log(rlmoney.value)
+    let { data: accountinformation, error } = await supabase //calls table
+        .from('accountinformation') //specifies table
+        .update({ balance: rlmoney.value }) //updates balance table with sum of values
+        .eq('id', user.data.user.id) //selects which row
+        .select() //returns the value
       if (this.slot1 === this.slot2 && this.slot2 === this.slot3) {
         const winValue = this.data2[this.slot1].value;
         this.winningMessage = `You win $${winValue}!`;
+        rlmoney.value = bal.value + winValue
+        console.log(rlmoney.value)
+        let { data: accountinformation, error } = await supabase //calls table
+        .from('accountinformation') //specifies table
+        .update({ balance: rlmoney.value }) //updates balance table with sum of values
+        .eq('id', user.data.user.id) //selects which row
+        .select() //returns the value
       } else {
         this.winningMessage = "";
       }
+      balance.bala()
     }
   }
 }
