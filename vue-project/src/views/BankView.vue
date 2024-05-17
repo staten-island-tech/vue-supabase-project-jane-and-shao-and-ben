@@ -88,7 +88,9 @@
 <script setup>
 import { supabase } from '@/lib/supabaseClient';
 import { ref } from 'vue';
+import { balancefunc } from '@/stores/counter';
 const bal = ref()
+const balance = balancefunc()
 const accid = ref()
 const totalb = ref()
 const totalw = ref()
@@ -116,7 +118,8 @@ async function addmoney() {
         .update({ balance: rlmoney.value }) //updates balance table with sum of values
         .eq('id', user.data.user.id) //selects which row
         .select() //returns the value
-    test() //updates table
+  test() //updates table
+    balance.bala()
 }
 </script>
 <style lang="scss" scoped>
