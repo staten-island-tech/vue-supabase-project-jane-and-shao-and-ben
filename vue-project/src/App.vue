@@ -14,7 +14,9 @@
         <RouterLink to="/slots" class="]">Slots</RouterLink>
       </a>
       <a class="mr-5 hover:text-gray-900">Roulette</a>
-      <a class="mr-5 hover:text-gray-900">Blackjack</a>
+      <a class="mr-5 hover:text-gray-900">
+        <RouterLink to="/BJ">Blackjack</RouterLink>
+      </a>
     </nav>
     <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-xl mt-4 md:mt-0"  @click="signout">
       Sign Out
