@@ -1,7 +1,7 @@
 <template>
   <div class="slot-machine">
     <button class="buttn" @click="spin" v-if="balaalala>=100">Spin: $100</button>
-    <button class="buttn" v-if="balaalala<100" @click="move">Cant Afford, Add More Money In Bank</button>
+    <button class="buttn" v-if="balaalala<100" ><RouterLink to="/bank">Can't Afford, Add More Money In Bank</RouterLink> </button>
     <div class='reel'>
       <img :src="data2[slot1].image">
       <img :src="data2[slot2].image">
@@ -70,23 +70,24 @@ export default {
         .eq('id', user.data.user.id) //selects row that contains the user id 
         bal.value = accountinfo2[0].balance //updates variables
       const rlmoney = ref(bal.value - reduce.value) //reduce values 
-      console.log(rlmoney.value)
+      const bets = ref(accountinfo2[0].total_bet+reduce.value)
     let { data: accountinformation, error } = await supabase //calls table
         .from('accountinformation') //specifies table
-        .update({ balance: rlmoney.value }) //updates balance table with sum of values
+      .update({ balance: rlmoney.value, total_bet: bets.value, total_losses: bets.value }) //updates balance table with sum of values
         .eq('id', user.data.user.id) //selects which row
         .select() //returns the value
       console.log(accountinformation[0].balance)
-      this.balaalala = accountinformations[0].balance
+      this.balaalala = accountinformation[0].balance
         console.log(this.balaalala)
       if (this.slot1 === this.slot2 && this.slot2 === this.slot3) {
         const winValue = this.data2[this.slot1].value;
         this.winningMessage = `You win $${winValue}!`;
         rlmoney.value = accountinformation[0].balance + winValue
         console.log(rlmoney.value)
+        const wins = ref(accountinfo2[0].total_wins+winValue)
         let { data: accountinformations, error } = await supabase //calls table
         .from('accountinformation') //specifies table
-        .update({ balance: rlmoney.value }) //updates balance table with sum of values
+        .update({ balance: rlmoney.value, total_wins: wins.value }) //updates balance table with sum of values
         .eq('id', user.data.user.id) //selects which row
         .select() //returns the value
         this.balaalala = accountinformations[0].balance
@@ -103,6 +104,7 @@ export default {
       console.log(this.balaalala)
     },
     move() {
+      console.log("what")
       router.push({path:'/bank'})    
     }
   },
