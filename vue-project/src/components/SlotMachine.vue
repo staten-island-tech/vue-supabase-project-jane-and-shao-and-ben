@@ -1,6 +1,7 @@
 <template>
   <div class="slot-machine">
-    <button class="buttn" @click="spin">Spin: $100</button>
+    <button class="buttn" @click="spin" v-if="balaalala>=100">Spin: $100</button>
+    <button class="buttn" v-if="balaalala<100" @click="move">Cant Afford, Add More Money In Bank</button>
     <div class='reel'>
       <img :src="data2[slot1].image">
       <img :src="data2[slot2].image">
@@ -15,7 +16,7 @@
 import { ref } from 'vue'
 import { balancefunc } from '@/stores/counter';
 import { supabase } from '@/lib/supabaseClient';
-
+import router from '@/router';
 export default {
   data() {
     return {
@@ -49,7 +50,9 @@ export default {
           image: "https://cdn4.iconfinder.com/data/icons/casino-games/512/bar-512.png"
         }
       ],
-      winningMessage: ""
+      winningMessage: "",
+      balaalala: 1
+
     }
   },
   methods: {
@@ -73,21 +76,38 @@ export default {
         .update({ balance: rlmoney.value }) //updates balance table with sum of values
         .eq('id', user.data.user.id) //selects which row
         .select() //returns the value
+      console.log(accountinformation[0].balance)
+      this.balaalala = accountinformations[0].balance
+        console.log(this.balaalala)
       if (this.slot1 === this.slot2 && this.slot2 === this.slot3) {
         const winValue = this.data2[this.slot1].value;
         this.winningMessage = `You win $${winValue}!`;
-        rlmoney.value = bal.value + winValue
+        rlmoney.value = accountinformation[0].balance + winValue
         console.log(rlmoney.value)
-        let { data: accountinformation, error } = await supabase //calls table
+        let { data: accountinformations, error } = await supabase //calls table
         .from('accountinformation') //specifies table
         .update({ balance: rlmoney.value }) //updates balance table with sum of values
         .eq('id', user.data.user.id) //selects which row
         .select() //returns the value
+        this.balaalala = accountinformations[0].balance
+        console.log(this.balaalala)
+
       } else {
         this.winningMessage = "";
       }
       balance.bala()
+    },
+    test(){
+      const balance = balancefunc()
+      this.balaalala = balance.bal
+      console.log(this.balaalala)
+    },
+    move() {
+      router.push({path:'/bank'})    
     }
+  },
+  mounted() {
+    this.test()
   }
 }
 </script>
@@ -112,7 +132,7 @@ export default {
 }
 .buttn {
   padding: 10px 20px;
-  background-color: #4CAF50;
+  background-color: rgb(99 102 241);
   color: white;
   border: none;
   border-radius: 5px;
@@ -121,7 +141,7 @@ export default {
   margin-bottom: 20px;
 }
 .buttn:hover {
-  background-color: #45a049;
+  background-color: rgb(111, 113, 197) ;
 }
 h2 {
   font-size: 24px;
