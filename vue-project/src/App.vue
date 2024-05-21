@@ -51,6 +51,9 @@ function bank() {
   console.log(where.bank)
 }
 balance.bala()
+if (login.login !== true) {
+  router.push({path:'/'})
+}
 </script>
 
 
