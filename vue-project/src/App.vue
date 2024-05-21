@@ -9,7 +9,10 @@
       <a class="mr-5 hover:text-gray-900"  @click="bank()">     
         <RouterLink to="/bank" class="]">Bank</RouterLink>
       </a>
-      <a class="mr-5 hover:text-gray-900">Slots</a>
+      <h3 class="mr-5">Balance: {{ balance.bal }}</h3>
+      <a class="mr-5 hover:text-gray-900">
+        <RouterLink to="/slots" class="]">Slots</RouterLink>
+      </a>
       <a class="mr-5 hover:text-gray-900">Roulette</a>
       <a class="mr-5 hover:text-gray-900">Blackjack</a>
     </nav>
@@ -28,11 +31,13 @@
 
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import { isLogin, whichthing } from './stores/counter';
+import { isLogin, whichthing,balancefunc } from './stores/counter';
 import { supabase } from './lib/supabaseClient';
 import router from './router';
+import { ref } from 'vue';
 const login = isLogin()
 const where = whichthing()
+const balance = balancefunc()
 async function signout() {
   await supabase.auth.signOut()
   login.changeN()
@@ -43,6 +48,7 @@ function bank() {
   where.bank = true
   console.log(where.bank)
 }
+balance.bala()
 </script>
 
 
