@@ -1,9 +1,9 @@
 <template>
-  <div>Roulette</div>
+  <RouletteGuess />
 </template>
 
 <script setup>
-import Roulette from "./views/RouletteView.vue";
+import RouletteGuess from "@/components/RouletteGuess.vue";
 </script>
 
 <style lang="scss" scoped></style>
