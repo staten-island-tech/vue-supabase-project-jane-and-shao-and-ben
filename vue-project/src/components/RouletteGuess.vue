@@ -1,108 +1,127 @@
 <template>
-  <!--   <h2>ROULETTE</h2>
-  <button class="button" @click="spin">Spin</button>
-  <div></div> -->
-  <html lang="en">
-    <head>
-      <meta charset="UTF-8" />
-      <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-      <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Document</title>
-      <link rel="stylesheet" href="style.css" />
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-      <link
-        href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;500&family=News+Cycle:wght@400;700&family=Noto+Sans+JP&display=swap"
-        rel="stylesheet"
-      />
-    </head>
-
-    <body>
-      <div class="container">
-        <button type="button" class="buttons" id="button1">A</button>
-        <button type="button" class="buttons" id="button2">B</button>
-        <button type="button" class="buttons" id="button3">C</button>
-        <button type="button" class="buttons" id="button4">D</button>
-      </div>
-      <div class="responsesContainer"></div>
-      <script type="module" src="main.js"></script>
-    </body>
-  </html>
+  <div class="slot-machine">
+    <button class="buttn" @click="spin" v-if="balaalala >= 100">
+      Spin: $100
+    </button>
+    <button class="buttn" v-if="balaalala < 100">
+      <RouterLink to="/bank">Can't Afford, Add More Money In Bank</RouterLink>
+    </button>
+    <div class="reel">
+      <img :src="data2[slot1].image" />
+      <img :src="data2[slot2].image" />
+      <img :src="data2[slot3].image" />
+    </div>
+    <div v-if="winningMessage">{{ winningMessage }}</div>
+  </div>
 </template>
 
 <script>
-const DOMSelectors = {
-  container: document.querySelector(".container"),
-  buttons: document.querySelectorAll(".buttons"),
-  button1: document.querySelector("#button1"),
-  button2: document.querySelector("#button2"),
-  button3: document.querySelector("#button3"),
-  button4: document.querySelector("#button4"),
-  responsesContainer: document.querySelector(".responsescontainer"),
+import { ref } from "vue";
+import { balancefunc } from "@/stores/counter";
+import { supabase } from "@/lib/supabaseClient";
+import router from "@/router";
+export default {
+  data() {
+    return {
+      slot1: 0,
+      slot2: 0,
+      slot3: 1,
+      data2: [
+        {
+          name: "Lemon",
+          value: 50,
+          image:
+            "https://cdn4.iconfinder.com/data/icons/slot-machines/512/Lemon-512.png",
+        },
+        {
+          name: "Melon",
+          value: 100,
+          image:
+            "https://cdn4.iconfinder.com/data/icons/slot-machines/512/Watermelon-512.png",
+        },
+        {
+          name: "Grapes",
+          value: 150,
+          image:
+            "https://cdn4.iconfinder.com/data/icons/slot-machines/512/Grapes-512.png",
+        },
+        {
+          name: "Cherry",
+          value: 250,
+          image:
+            "https://cdn4.iconfinder.com/data/icons/slot-machines/512/Cherry-512.png",
+        },
+        {
+          name: "Bar",
+          value: 500,
+          image:
+            "https://cdn4.iconfinder.com/data/icons/casino-games/512/bar-512.png",
+        },
+      ],
+      winningMessage: "",
+      balaalala: 1,
+    };
+  },
+  methods: {
+    async spin() {
+      this.slot1 = Math.floor(Math.random() * this.data2.length);
+      this.slot2 = Math.floor(Math.random() * this.data2.length);
+      this.slot3 = Math.floor(Math.random() * this.data2.length);
+      const bal = ref();
+      const user = await supabase.auth.getUser(); //pulls user instance
+      const balance = balancefunc();
+      const reduce = ref(100);
+      let { data: accountinfo2, err } = await supabase //calls table
+        .from("accountinformation") //specifies table
+        .select("*") //selects all rows
+        .eq("id", user.data.user.id); //selects row that contains the user id
+      bal.value = accountinfo2[0].balance; //updates variables
+      const rlmoney = ref(bal.value - reduce.value); //reduce values
+      const bets = ref(accountinfo2[0].total_bet + reduce.value);
+      let { data: accountinformation, error } = await supabase //calls table
+        .from("accountinformation") //specifies table
+        .update({
+          balance: rlmoney.value,
+          total_bet: bets.value,
+          total_losses: bets.value,
+        }) //updates balance table with sum of values
+        .eq("id", user.data.user.id) //selects which row
+        .select(); //returns the value
+      console.log(accountinformation[0].balance);
+      this.balaalala = accountinformation[0].balance;
+      console.log(this.balaalala);
+      if (this.slot1 === this.slot2 && this.slot2 === this.slot3) {
+        const winValue = this.data2[this.slot1].value;
+        this.winningMessage = `You win $${winValue}!`;
+        rlmoney.value = accountinformation[0].balance + winValue;
+        console.log(rlmoney.value);
+        const wins = ref(accountinfo2[0].total_wins + winValue);
+        let { data: accountinformations, error } = await supabase //calls table
+          .from("accountinformation") //specifies table
+          .update({ balance: rlmoney.value, total_wins: wins.value }) //updates balance table with sum of values
+          .eq("id", user.data.user.id) //selects which row
+          .select(); //returns the value
+        this.balaalala = accountinformations[0].balance;
+        console.log(this.balaalala);
+      } else {
+        this.winningMessage = "";
+      }
+      balance.bala();
+    },
+    test() {
+      const balance = balancefunc();
+      this.balaalala = balance.bal;
+      console.log(this.balaalala);
+    },
+    move() {
+      console.log("what");
+      router.push({ path: "/bank" });
+    },
+  },
+  mounted() {
+    this.test();
+  },
 };
-
-function rgb() {
-  let a = Math.round(Math.random() * 256);
-  let b = Math.round(Math.random() * 256);
-  let c = Math.round(Math.random() * 256);
-  return { a, b, c };
-}
-
-function value() {
-  const array = [1, 2, 3, 4];
-  let randomValue = array[Math.floor(Math.random() * array.length)];
-  return { randomValue };
-}
-
-let v = value();
-
-function changeBackground() {
-  for (let i = 1; i < 5; i++) {
-    let w = rgb();
-    DOMSelectors[
-      `button${i}`
-    ].style.backgroundColor = `rgb(${w.a}, ${w.b}, ${w.c})`;
-    if (i === v.randomValue) {
-      DOMSelectors.container.insertAdjacentHTML(
-        "beforebegin",
-        `<div class="card">
-        <h1>${w.a},&nbsp;</h1>
-        <h1>${w.b},&nbsp;</h1>
-        <h1>${w.c}</h1>
-        </div>`
-      );
-    }
-  }
-}
-
-changeBackground();
-
-function checkResult(event) {
-  const correctButton = event.target.id;
-
-  if (correctButton === `button${v.randomValue}`) {
-    DOMSelectors.responsesContainer.insertAdjacentHTML(
-      "afterbegin",
-      `<div class="responsesButtons">
-        <h1>Correct!</h1>
-        <div class="reloadButton">
-          <button type="button" onclick="location.reload()">Click here to play again!</button>
-        </div>
-      </div>`
-    );
-  } else {
-    DOMSelectors.responsesContainer.insertAdjacentHTML(
-      "afterend",
-      `<div class="responsesButtons">
-        <h1>Try again.</h1>
-      </div>`
-    );
-  }
-}
-
-DOMSelectors.buttons.forEach((button) => {
-  button.addEventListener("click", checkResult);
-});
 /* function value() {
   const array = [
     1, 2, 3, 4, 5, 6, 7, 8, 9, 10
@@ -172,42 +191,4 @@ const numbers = [
 //if selected single/multi digit number, add single/multi digit number to bank */
 </script>
 
-<style lang="scss" scoped>
-:root {
-  background-color: rgb(192, 192, 192);
-  font-family: "Kanit", sans-serif;
-  font-family: "News Cycle", sans-serif;
-  font-family: "Noto Sans JP", sans-serif;
-}
-.container {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-.buttons {
-  height: 200px;
-  width: 200px;
-  margin: 2%;
-  border: none;
-  border-radius: 2%;
-}
-.card {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  background-color: aliceblue;
-}
-.reloadButton {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.responsesButtons {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-</style>
+<style lang="scss" scoped></style>
