@@ -1,8 +1,18 @@
 <template>
   <div class="slot-machine">
-    <button class="buttn" @click="spin" v-if="balaalala >= 100">
-      Spin: $100
-    </button>
+    <button class="buttn" @click="spin" v-if="balaalala >= 100">Spin</button>
+    <div class="buttons">
+      <button class="red" @click="bet" v-if="balaalala >= 100">Bet $100</button>
+    </div>
+    <div class="buttons">
+      <button class="red" @click="bet" v-if="balaalala >= 200">Bet $200</button>
+    </div>
+    <div class="buttons">
+      <button class="red" @click="bet" v-if="balaalala >= 300">Bet $300</button>
+    </div>
+    <div class="buttons">
+      <button class="red" @click="bet" v-if="balaalala >= 400">Bet $400</button>
+    </div>
     <button class="buttn" v-if="balaalala < 100">
       <RouterLink to="/bank">Can't Afford, Add More Money In Bank</RouterLink>
     </button>
@@ -122,73 +132,44 @@ export default {
     this.test();
   },
 };
-/* function value() {
-  const array = [
-    1, 2, 3, 4, 5, 6, 7, 8, 9, 10
-  ];
-  let randomValue = array[Math.floor(Math.random() * array.length)];
-  return { randomValue };
-}
-
-const numbers = [
-  {
-    value: 1,
-    color: "red",
-    even: false,
-  },
-  {
-    value: 2,
-    color: "black",
-    even: true,
-  },
-  {
-    value: 3,
-    color: "red",
-    even: false,
-  },
-  {
-    value: 4,
-    color: "black",
-    even: true,
-  },
-  {
-    value: 5,
-    color: "red",
-    even: false,
-  },
-  {
-    value: 6,
-    color: "black",
-    even: true,
-  },
-  {
-    value: 7,
-    color: "red",
-    even: false,
-  },
-  {
-    value: 8,
-    color: "black",
-    even: true,
-  },
-  {
-    value: 9,
-    color: "red",
-    even: false,
-  },
-  {
-    value: 10,
-    color: "black",
-    even: true,
-  },
-];
-
-
-//if randomvalue=betnumbers.value, add value to bank and display
-//else, subtract bet number value from bank
-//if selected red/black, add red/black number selected value to bank
-//if selected odd/even, add odd/even number selected value to bank
-//if selected single/multi digit number, add single/multi digit number to bank */
 </script>
 
-<style lang="scss" scoped></style>
+<style scoped>
+.reel {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  padding: 15px;
+  width: 200px;
+  height: 150px;
+}
+.slot-machine {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+.buttn {
+  padding: 10px 20px;
+  background-color: rgb(99 102 241);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+.buttn:hover {
+  background-color: rgb(111, 113, 197);
+}
+h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+h3 {
+  font-size: 15px;
+  margin-bottom: 10px;
+}
+</style>
