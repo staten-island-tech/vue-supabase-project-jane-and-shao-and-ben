@@ -5,7 +5,9 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
 import BJMachine from '../components/BJMachine.vue';
+
 </script>
 
 <style lang="scss" scoped>
