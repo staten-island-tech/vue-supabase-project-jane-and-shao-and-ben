@@ -1,6 +1,14 @@
 <template>
     <div>
-
+        <div class="hand grid grid-cols-3 h-screen grid-rows-3 w-3/5 justify-center m-auto mt-20" >
+            <div class="c1 col-start-1 row-span-2 items-center flex border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
+                <h2>{{ hand.hand[0].card }}</h2>
+            </div>
+            <div class="c2 col-start-3 row-span-2 flex items-center border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
+                <h2>{{ hand.hand[1].card }}</h2>
+            </div>
+            <h3 class="col-start-2 flex justify-center">Hand Value: {{ hand.score }}</h3>
+        </div>
     </div>
 </template>
 
@@ -29,7 +37,7 @@ function deckmaker() {
             const card = ref({
                 card: deck.value.cards[i],
                 Suit: deck.value.suits[suit],
-                value: values.value
+                score: values.value
             })
             deck.value.deck.push(card.value)
         }
@@ -52,14 +60,19 @@ function shuffle() {
 function deal() {
     for (let i = 0; i < 2; i++){
         let card = deck.value.deck.pop();
-        hand.value.hand.push(card);
-        
+        hand.value.hand.push(card); 
     }
+    console.log(hand.value.hand[0].score)
+    console.log(hand.value.hand[1].score)
+    hand.value.score = hand.value.hand[0].score + hand.value.hand[1].score
+    console.log(hand.value.score)
 }
 function gamestart() {
     deckmaker()
     shuffle()
+    deal()
 }
+gamestart()
 </script>
 
 <style lang="scss" scoped>
