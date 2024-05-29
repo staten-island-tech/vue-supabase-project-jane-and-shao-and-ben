@@ -1,13 +1,27 @@
 <template>
-    <div>
-        <div class="hand grid grid-cols-3 h-screen grid-rows-3 w-3/5 justify-center m-auto mt-20" >
+    <div class="grid grid-rows-5 bg-green-700 bg-cover w-11/12 m-auto">
+        <div class="game flex justify-center border-black border-2 w-1/6 m-auto h-1/3 hover:bg-slate-400" >
+            <button @click="gamestart">Start Game?</button>
+        </div   >
+        <div class="hand grid grid-cols-3 grid-rows-3 w-3/5 justify-center m-auto row-span-2 h-full row-start-2" v-if="test1!==''">
+            <h1 class="col-start-2 row-start-1 justify-center flex text-3xl underline font-semibold">PLAYER</h1>
             <div class="c1 col-start-1 row-span-2 items-center flex border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
-                <h2>{{ hand.hand[0].card }}</h2>
+                <h2>{{ test1 }}</h2>
             </div>
             <div class="c2 col-start-3 row-span-2 flex items-center border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
-                <h2>{{ hand.hand[1].card }}</h2>
+                <h2>{{ test2 }}</h2>
             </div>
-            <h3 class="col-start-2 flex justify-center">Hand Value: {{ hand.score }}</h3>
+            <h3 class="col-start-2 row-start-2 flex justify-center">Hand Value: {{ hand.score }}</h3>
+        </div>
+        <div class="hand grid grid-cols-3 grid-rows-3 w-3/5 justify-center m-auto row-span-2 h-full row-start-4" v-if="test1!==''">
+            <h1 class="col-start-2 row-start-1 justify-center flex text-3xl underline font-semibold">PLAYER</h1>
+            <div class="c1 col-start-1 row-span-2 items-center flex border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
+                <h2>{{ test1 }}</h2>
+            </div>
+            <div class="c2 col-start-3 row-span-2 flex items-center border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
+                <h2>{{ test2 }}</h2>
+            </div>
+            <h3 class="col-start-2 row-start-2 flex justify-center">Hand Value: {{ hand.score }}</h3>
         </div>
     </div>
 </template>
@@ -23,6 +37,8 @@ const hand = ref({
     hand: [],
     score: 0
 })
+const test1 = ref('')
+const test2 = ref('')
 function deckmaker() {
     deck.value.deck = [];
     for (let i = 0; i < deck.value.cards.length; i++){
@@ -62,6 +78,9 @@ function deal() {
         let card = deck.value.deck.pop();
         hand.value.hand.push(card); 
     }
+    test1.value = hand.value.hand[0].card
+    test2.value = hand.value.hand[1].card
+
     console.log(hand.value.hand[0].score)
     console.log(hand.value.hand[1].score)
     hand.value.score = hand.value.hand[0].score + hand.value.hand[1].score
@@ -72,7 +91,6 @@ function gamestart() {
     shuffle()
     deal()
 }
-gamestart()
 </script>
 
 <style lang="scss" scoped>

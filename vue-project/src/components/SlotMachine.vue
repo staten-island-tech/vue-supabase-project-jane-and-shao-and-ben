@@ -90,7 +90,7 @@ export default {
         .update({ balance: rlmoney.value, total_wins: wins.value }) //updates balance table with sum of values
         .eq('id', user.data.user.id) //selects which row
         .select() //returns the value
-        this.balaalala = accountinformations[0].balance
+        this.balaalala = accountinformations.balance
         console.log(this.balaalala)
 
       } else {
