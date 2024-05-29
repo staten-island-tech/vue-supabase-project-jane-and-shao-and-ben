@@ -1,64 +1,62 @@
 <template>
   <div class="buttons">
-    <button id="one">1</button>
-    <button id="two">2</button>
-    <button id="three">3</button>
-    <button id="four">4</button>
+    <button
+      v-for="button in buttons"
+      :key="button.id"
+      :style="getButtonStyle(button.id)"
+      @click="handleClick(button.id)"
+    >
+      {{ button.id }}
+    </button>
+  </div>
+  <div v-if="result" class="result">
+    <p v-if="userChoice === outCorner">You win! You chose the right corner!</p>
+    <p v-else>You're safe! Corner {{ outCorner }} is out.</p>
   </div>
 </template>
 
 <script>
-console.log(Math.ceil(Math.random() * 4));
+import { ref } from "vue";
+
+export default {
+  name: "Roulette",
+  setup() {
+    const buttons = ref([
+      { id: 1, color: "black" },
+      { id: 2, color: "red" },
+      { id: 3, color: "black" },
+      { id: 4, color: "red" },
+    ]);
 </script>
 
-<style>
+<style scoped>
 .buttons {
+  display: flex;
   align-items: center;
-  flex-direction: row;
   justify-content: center;
-  margin-right: 50%;
+  flex-wrap: wrap;
+  gap: 20px;
 }
-#one {
-  background-color: rgb(0, 0, 0);
-  padding: 10px 20px;
+button {
+  padding: 20px 40px;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  margin-bottom: 20px;
 }
-#two {
-  background-color: rgb(255, 0, 0);
-  padding: 10px 20px;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-#three {
-  background-color: rgb(0, 0, 0);
-  padding: 10px 20px;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 20px;
-}
-#four {
-  background-color: rgb(255, 0, 0);
-  padding: 10px 20px;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-  margin-bottom: 20px;
+.result {
+  margin-top: 20px;
+  font-size: 18px;
+  text-align: center;
 }
 body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f0f0f0;
 }
 </style>
