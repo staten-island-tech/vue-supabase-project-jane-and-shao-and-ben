@@ -20,6 +20,7 @@ import router from '@/router';
 export default {
   data() {
     return {
+      clickamt: 0,
       slot1: 0,
       slot2: 0,
       slot3: 1,
@@ -57,9 +58,33 @@ export default {
   },
   methods: {
     async spin() {
-      this.slot1 = Math.floor(Math.random() * this.data2.length);
+      this.clickamt++;
+      console.log(this.clickamt)
+      if (this.clickamt >= 10) {
+        let chance = Math.floor(Math.random()*6)
+        console.log(chance)
+        if (chance === 5||chance===4) {
+          let theslot = Math.floor(Math.random() * this.data2.length);
+          this.slot1 = theslot
+          this.slot2 = theslot
+          this.slot2 = theslot
+          this.clickamt=0
+        } else {
+          this.slot1 = Math.floor(Math.random() * this.data2.length);
       this.slot2 = Math.floor(Math.random() * this.data2.length);
       this.slot3 = Math.floor(Math.random() * this.data2.length);
+        }
+        
+    
+      }
+      else {
+        this.slot1 = Math.floor(Math.random() * this.data2.length);
+      this.slot2 = Math.floor(Math.random() * this.data2.length);
+      this.slot3 = Math.floor(Math.random() * this.data2.length);
+      }
+
+
+      
       const bal = ref()
       const user = await supabase.auth.getUser() //pulls user instance
       const balance = balancefunc()
