@@ -76,6 +76,7 @@ export default {
       .update({ balance: rlmoney.value, total_bet: bets.value, total_losses: bets.value }) //updates balance table with sum of values
         .eq('id', user.data.user.id) //selects which row
         .select() //returns the value
+        console.log(accountinformation[0])
       console.log(accountinformation[0].balance)
       this.balaalala = accountinformation[0].balance
         console.log(this.balaalala)
@@ -84,13 +85,15 @@ export default {
         this.winningMessage = `You win $${winValue}!`;
         rlmoney.value = accountinformation[0].balance + winValue
         console.log(rlmoney.value)
-        const wins = ref(accountinfo2[0].total_wins+winValue)
-        let { data: accountinformations, error } = await supabase //calls table
+        const wins = ref(accountinfo2[0].total_winnings + winValue)
+        console.log(wins.value)
+        let { data: accountinformation3, error } = await supabase //calls table
         .from('accountinformation') //specifies table
-        .update({ balance: rlmoney.value, total_wins: wins.value }) //updates balance table with sum of values
+        .update({ balance: rlmoney.value, total_winnings: wins.value }) //updates balance table with sum of values
         .eq('id', user.data.user.id) //selects which row
         .select() //returns the value
-        this.balaalala = accountinformations[0].balance
+        console.log(accountinformation3[0])
+       this.balaalala = accountinformation3[0].balance
         console.log(this.balaalala)
 
       } else {

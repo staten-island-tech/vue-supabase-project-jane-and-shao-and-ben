@@ -14,7 +14,9 @@
         <RouterLink to="/slots" class="]">Slots</RouterLink>
       </a>
       <a class="mr-5 hover:text-gray-900">Roulette</a>
-      <a class="mr-5 hover:text-gray-900">Blackjack</a>
+      <a class="mr-5 hover:text-gray-900">
+        <RouterLink to="/BJ">Blackjack</RouterLink>
+      </a>
     </nav>
     <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-xl mt-4 md:mt-0"  @click="signout">
       Sign Out
@@ -38,6 +40,9 @@ import { ref } from 'vue';
 const login = isLogin()
 const where = whichthing()
 const balance = balancefunc()
+const d = new Date();
+let day = d.getDate();  
+console.log(day)
 async function signout() {
   await supabase.auth.signOut()
   login.changeN()
@@ -49,6 +54,30 @@ function bank() {
   console.log(where.bank)
 }
 balance.bala()
+/* if (login.login !== true) {
+  router.push({path:'/'})
+} */
+async function test() {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (user) {
+    console.log(user)
+    let date = user.last_sign_in_at.slice(8, 10)
+    console.log(date)
+    if (date !== day.toString()) {
+      await supabase.auth.signOut()
+      router.push({path: '/'})
+    }
+    else {
+      login.changeY()
+    }
+  }
+  else {
+    router.push({path: '/'})
+    login.changeN()
+  }
+}
+test()
+
 </script>
 
 
