@@ -21,31 +21,41 @@
       <a class="mr-5 hover:text-gray-900">
         <RouterLink to="/BJ">Blackjack</RouterLink>
       </a>
-    </nav>
-    <button class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-xl mt-4 md:mt-0"  @click="signout">
-      Sign Out
-      <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4 ml-1" viewBox="0 0 24 24">
-        <path d="M5 12h14M12 5l7 7-7 7"></path>
-      </svg>
-    </button>
-  </div>
-</header>
-  
-  <RouterView/>
+      <button
+        class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-xl mt-4 md:mt-0"
+        @click="signout"
+      >
+        Sign Out
+        <svg
+          fill="none"
+          stroke="currentColor"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          class="w-4 h-4 ml-1"
+          viewBox="0 0 24 24"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7"></path>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <RouterView />
 </template>
 
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import { isLogin, whichthing,balancefunc } from './stores/counter';
-import { supabase } from './lib/supabaseClient';
-import router from './router';
-import { ref } from 'vue';
-const login = isLogin()
-const where = whichthing()
-const balance = balancefunc()
+import { RouterLink, RouterView } from "vue-router";
+import { isLogin, whichthing, balancefunc } from "./stores/counter";
+import { supabase } from "./lib/supabaseClient";
+import router from "./router";
+import { ref } from "vue";
+const login = isLogin();
+const where = whichthing();
+const balance = balancefunc();
 const d = new Date();
-let day = d.getDate();  
-console.log(day)
+let day = d.getDate();
+console.log(day);
 async function signout() {
   await supabase.auth.signOut();
   login.changeN();
@@ -56,31 +66,30 @@ function bank() {
   where.bank = true;
   console.log(where.bank);
 }
-balance.bala()
+balance.bala();
 /* if (login.login !== true) {
   router.push({path:'/'})
 } */
 async function test() {
-  const { data: { user } } = await supabase.auth.getUser()
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
   if (user) {
-    console.log(user)
-    let date = user.last_sign_in_at.slice(8, 10)
-    console.log(date)
+    console.log(user);
+    let date = user.last_sign_in_at.slice(8, 10);
+    console.log(date);
     if (date !== day.toString()) {
-      await supabase.auth.signOut()
-      router.push({path: '/'})
+      await supabase.auth.signOut();
+      router.push({ path: "/" });
+    } else {
+      login.changeY();
     }
-    else {
-      login.changeY()
-    }
-  }
-  else {
-    router.push({path: '/'})
-    login.changeN()
+  } else {
+    router.push({ path: "/" });
+    login.changeN();
   }
 }
-test()
-
+test();
 </script>
 
 <style lang="scss" scoped></style>

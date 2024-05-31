@@ -4,14 +4,16 @@
       v-for="button in buttons"
       :key="button.id"
       :style="getButtonStyle(button.id)"
-      @click="handleClick(button.id)"
+      @click="guess(button.id)"
     >
       {{ button.id }}
     </button>
   </div>
   <div v-if="result" class="result">
-    <p v-if="userChoice === outCorner">You win! You chose the right corner!</p>
-    <p v-else>You're safe! Corner {{ outCorner }} is out.</p>
+    <p v-if="userChoice === correctCorner">
+      You win! You chose the right corner!
+    </p>
+    <p v-else>You lose! Corner {{ correctCorner }} is correct.</p>
   </div>
 </template>
 
@@ -27,6 +29,41 @@ export default {
       { id: 3, color: "black" },
       { id: 4, color: "red" },
     ]);
+
+    const userChoice = ref(null);
+    const correctCorner = ref(null);
+    const result = ref(false);
+
+    const guess = (id) => {
+      userChoice.value = id;
+      correctCorner.value = Math.ceil(Math.random() * 4);
+      result.value = true;
+      console.log(`Corner ${correctCorner.value} is out`);
+    };
+
+    const getButtonStyle = (id) => {
+      if (id === userChoice.value) {
+        return { backgroundColor: "green" }; // User's choice
+      }
+      if (id === correctCorner.value) {
+        x;
+        return { backgroundColor: "gray" }; // Out corner
+      }
+      return {
+        backgroundColor: buttons.value.find((button) => button.id === id).color,
+      };
+    };
+
+    return {
+      buttons,
+      guess,
+      userChoice,
+      correctCorner,
+      result,
+      getButtonStyle,
+    };
+  },
+};
 </script>
 
 <style scoped>
