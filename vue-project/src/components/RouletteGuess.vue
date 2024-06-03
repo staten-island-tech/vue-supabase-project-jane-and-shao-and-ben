@@ -1,99 +1,57 @@
 <template>
-  <div class="buttons">
-    <button
-      v-for="button in buttons"
-      :key="button.id"
-      :style="getButtonStyle(button.id)"
-      @click="guess(button.id)"
-    >
-      {{ button.id }}
-    </button>
-  </div>
-  <div v-if="result" class="result">
-    <p v-if="userChoice === correctCorner">
-      You win! You chose the right corner!
-    </p>
-    <p v-else>You lose! Corner {{ correctCorner }} is correct.</p>
+  <div>
+    <div class="buttons">
+      <button @click="reset">play</button>
+      <button @click="guess(1)">1</button>
+      <button @click="guess(2)">2</button>
+      <button @click="guess(3)">3</button>
+      <button @click="guess(4)">4</button>
+    </div>
+    <div v-if="message" class="message">{{ message }}</div>
   </div>
 </template>
 
 <script>
-import { ref } from "vue";
-
 export default {
-  name: "Roulette",
-  setup() {
-    const buttons = ref([
-      { id: 1, color: "black" },
-      { id: 2, color: "red" },
-      { id: 3, color: "black" },
-      { id: 4, color: "red" },
-    ]);
-
-    const userChoice = ref(null);
-    const correctCorner = ref(null);
-    const result = ref(false);
-
-    const guess = (id) => {
-      userChoice.value = id;
-      correctCorner.value = Math.ceil(Math.random() * 4);
-      result.value = true;
-      console.log(`Corner ${correctCorner.value} is out`);
-    };
-
-    const getButtonStyle = (id) => {
-      if (id === userChoice.value) {
-        return { backgroundColor: "green" }; // User's choice
-      }
-      if (id === correctCorner.value) {
-        x;
-        return { backgroundColor: "gray" }; // Out corner
-      }
-      return {
-        backgroundColor: buttons.value.find((button) => button.id === id).color,
-      };
-    };
-
+  data() {
     return {
-      buttons,
-      guess,
-      userChoice,
-      correctCorner,
-      result,
-      getButtonStyle,
+      correctCorner: null,
+      message: "",
     };
+  },
+  methods: {
+    reset() {
+      this.correctCorner = Math.floor(Math.random() * 4) + 1;
+      this.message = "";
+    },
+    guess(corner) {
+      if (corner === this.correctCorner) {
+        this.message = "Congratulations, you guessed the correct corner!";
+      } else {
+        this.message = "Sorry, wrong corner!";
+      }
+    },
+  },
+  mounted() {
+    this.reset();
   },
 };
 </script>
 
-<style scoped>
+<style>
 .buttons {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 20px;
-}
-button {
-  padding: 20px 40px;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-.result {
-  margin-top: 20px;
-  font-size: 18px;
-  text-align: center;
-}
-body {
-  display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  height: 100vh;
-  margin: 0;
-  background-color: #f0f0f0;
+}
+
+.buttons button {
+  margin: 5px;
+}
+
+.message {
+  margin-top: 20px;
+  font-size: 20px;
+  font-weight: bold;
 }
 </style>

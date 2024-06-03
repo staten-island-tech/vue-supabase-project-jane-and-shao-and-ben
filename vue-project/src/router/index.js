@@ -45,6 +45,11 @@ const router = createRouter({
       name: "blackjack",
       component: BJView,
     },
+    {
+      path: "/signin",
+      name: "signin",
+      component: SignIn,
+    },
   ],
 });
 

@@ -17,7 +17,9 @@
       <a class="mr-5 hover:text-gray-900">
         <RouterLink to="/slots" class="]">Slots</RouterLink>
       </a>
-      <a class="mr-5 hover:text-gray-900">Roulette</a>
+      <a class="mr-5 hover:text-gray-900">
+        <RouterLink to="/roulette" class="]">Roulette</RouterLink></a
+      >
       <a class="mr-5 hover:text-gray-900">
         <RouterLink to="/BJ">Blackjack</RouterLink>
       </a>
