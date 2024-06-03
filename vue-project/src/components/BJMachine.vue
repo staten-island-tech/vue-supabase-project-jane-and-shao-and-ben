@@ -1,27 +1,28 @@
 <template>
-    <div class="grid grid-rows-5 bg-green-700 bg-cover w-11/12 m-auto">
-        <div class="game flex justify-center border-black border-2 w-1/6 m-auto h-1/3 hover:bg-slate-400" >
+    <div class="game flex justify-center border-black border-2 w-1/6 m-auto h-1/3 hover:bg-slate-400 " v-if="hands.player.card1===''">
             <button @click="gamestart">Start Game?</button>
         </div   >
-        <div class="hand grid grid-cols-3 grid-rows-3 w-3/5 justify-center m-auto row-span-2 h-full row-start-2" v-if="test1!==''">
+    <div class="grid grid-rows-5 bg-green-700 bg-cover w-11/12 m-auto">
+        
+        <div class="hand grid grid-cols-3 grid-rows-3 w-3/5 justify-center m-auto row-span-2 h-full row-start-2" v-if="hands.player.card1!==''">
             <h1 class="col-start-2 row-start-1 justify-center flex text-3xl underline font-semibold">PLAYER</h1>
-            <div class="c1 col-start-1 row-span-2 items-center flex border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
-                <h2>{{ test1 }}</h2>
+            <div class="c1 col-start-1 row-span-2 items-center flex border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl bg-white">
+                <h2>{{ hands.dealer.card1 }}</h2>
             </div>
-            <div class="c2 col-start-3 row-span-2 flex items-center border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
-                <h2>{{ test2 }}</h2>
+            <div class="c2 col-start-3 row-span-2 flex items-center border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl bg-white">
+                <h2>{{ hands.dealer.card2 }}</h2>
             </div>
-            <h3 class="col-start-2 row-start-2 flex justify-center">Hand Value: {{ hand.score }}</h3>
+            <h3 class="col-start-2 row-start-2 flex justify-center">Hand Value: {{ hands.player.score }}</h3>
         </div>
-        <div class="hand grid grid-cols-3 grid-rows-3 w-3/5 justify-center m-auto row-span-2 h-full row-start-4" v-if="test1!==''">
+        <div class="hand grid grid-cols-3 grid-rows-3 w-3/5 justify-center m-auto row-span-2 h-full row-start-4" v-if="hands.player.card1!==''">
             <h1 class="col-start-2 row-start-1 justify-center flex text-3xl underline font-semibold">PLAYER</h1>
-            <div class="c1 col-start-1 row-span-2 items-center flex border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
-                <h2>{{ test1 }}</h2>
+            <div class="c1 col-start-1 row-span-2 items-center flex border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl bg-white">
+                <h2>{{ hands.player.card1 }}</h2>
             </div>
-            <div class="c2 col-start-3 row-span-2 flex items-center border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl">
-                <h2>{{ test2 }}</h2>
+            <div class="c2 col-start-3 row-span-2 flex items-center border-4 border-black rounded-3xl text-[150px] justify-center shadow-2xl bg-white">
+                <h2>{{ hands.player.card2 }}</h2>
             </div>
-            <h3 class="col-start-2 row-start-2 flex justify-center">Hand Value: {{ hand.score }}</h3>
+            <h3 class="col-start-2 row-start-2 flex justify-center">Hand Value: {{ hands.dealer.score }}</h3>
         </div>
     </div>
 </template>
@@ -37,8 +38,19 @@ const hand = ref({
     hand: [],
     score: 0
 })
-const test1 = ref('')
-const test2 = ref('')
+const hands = ref({
+    player: {
+        card1: '',
+        card2: '', 
+        score: 0,
+    },
+    dealer: {
+        card1: '',
+        card2: '',
+        score: 0
+    }
+   
+})
 function deckmaker() {
     deck.value.deck = [];
     for (let i = 0; i < deck.value.cards.length; i++){
@@ -74,16 +86,19 @@ function shuffle() {
 }
 
 function deal() {
-    for (let i = 0; i < 2; i++){
+    for (let i = 0; i < 4; i++){
         let card = deck.value.deck.pop();
         hand.value.hand.push(card); 
     }
-    test1.value = hand.value.hand[0].card
-    test2.value = hand.value.hand[1].card
+    hands.value.player.card1 = hand.value.hand[0].card
+    hands.value.player.card2 = hand.value.hand[1].card
+    hands.value.dealer.card1 = hand.value.hand[2].card
+    hands.value.dealer.card2 = hand.value.hand[3].card
 
     console.log(hand.value.hand[0].score)
     console.log(hand.value.hand[1].score)
-    hand.value.score = hand.value.hand[0].score + hand.value.hand[1].score
+    hands.value.player.score = hand.value.hand[0].score + hand.value.hand[1].score
+    hands.value.dealer.score = hand.value.hand[2].score + hand.value.hand[3].score
     console.log(hand.value.score)
 }
 function gamestart() {
