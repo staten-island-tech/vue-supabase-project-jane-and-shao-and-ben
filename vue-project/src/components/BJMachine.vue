@@ -34,6 +34,7 @@
 
 <script setup>
 import { ref } from 'vue';
+import { balancefunc } from '@/stores/counter';
 const gamestarted = ref(false)
 const cardsdelt = ref(0)
 const deck = ref({
