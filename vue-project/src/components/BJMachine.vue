@@ -26,8 +26,8 @@
             
         </div>
         <div class="actions row-start-7  mx-auto mt-[-10%] text-3xl justify-center" v-if="gamestarted">
-            <button class="mr-10 border-2 border-black w-20 bg-slate-300 hover:scale-110 hover:bg-slate-400 hover:shadow-xl shadow-lg rounded-md duration-300" @click="hit">Hit</button>
-            <button class="ml-10 border-2 border-black w-24 bg-slate-300 hover:scale-110 hover:bg-slate-400 hover:shadow-xl shadow-lg rounded-md duration-300">Stand</button>
+            <button class="mr-10 border-2 border-black w-20 bg-slate-300 hover:scale-110 hover:bg-slate-400 hover:shadow-xl shadow-lg rounded-md duration-300" @click="playerhit">Hit</button>
+            <button class="ml-10 border-2 border-black w-24 bg-slate-300 hover:scale-110 hover:bg-slate-400 hover:shadow-xl shadow-lg rounded-md duration-300" @click="playerstand">Stand</button>
         </div>
     </div>
 </template>
@@ -36,6 +36,8 @@
 import { ref } from 'vue';
 const gamestarted = ref(false)
 const cardsdelt = ref(0)
+const bust = ref(false)
+const blackjack = ref(false)
 const deck = ref({
     suits: ['Diamonds', 'Hearts', 'Spades', 'Clubs'],
     cards: ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'],
@@ -109,7 +111,7 @@ function deal() {
     hands.value.dealer.displayscore = hand.value.hand[2].score
     console.log(hand.value.score)
 }
-function hit() {
+function playerhit() {
     let card = deck.value.deck.pop();
     cardsdelt.value ++
     hand.value.hand.push(card); 
@@ -118,28 +120,98 @@ function hit() {
     console.log(hand.value.hand[cardsdelt.value-1])
     hands.value.player.score = hands.value.player.score + hand.value.hand[cardsdelt.value - 1].score
     if (hands.value.player.score > 21) {
-        setInterval(() => {
-            console.log("bust") 
-           
-        }, 3000);
+        
+            bust.value = true
+            gameend()
     }
 }
+function dealerhit() {
+    let card = deck.value.deck.pop();
+    cardsdelt.value ++
+    hand.value.hand.push(card); 
+    hands.value.dealer.cards.push(hand.value.hand[cardsdelt.value-1].card )
+    console.log(cardsdelt.value)
+    console.log(hand.value.hand[cardsdelt.value-1])
+    hands.value.dealer.score = hands.value.dealer.score + hand.value.hand[cardsdelt.value - 1].score
+    if (hands.value.dealer.score > 21) {
+
+        bust.value = true
+        gameend()
+    }  
+}
 function gamestart() {
+    hand.value.hand = []
+    hand.value.score = 0
+    hands.value.player.cards = []
+    hands.value.player.score = 0
+    hands.value.dealer.score = 0
+    hands.value.dealer.cards = []
+    hands.value.dealer.displayscore = 0
+    deck.value.deck = []
+    cardsdelt.value = 0;
+    bust.value = false 
+    blackjack.value = false
     gamestarted.value = true
     deckmaker()
     shuffle()
     deal()
-    if (hands.value.player.score === 21 || hands.value.dealer.score === 21) {
-        setInterval(function () {
-            if (hands.value.player.score === 21) {
-                console.log("YOU WIN blackjack!")
-            }
-            else {
-                console.log("YOU LOSE DEALER HAS BLACJKAC")
-            }
-        },
-        3000)
+    function bjcheck() {
+
+
+        if (hands.value.player.score === 21 || hands.value.dealer.score === 21) {
+            
+                if (hands.value.player.score === 21) {
+                    blackjack.value = true
+                    gameend()
+                }
+                else {
+                    blackjack.value = true
+                    gameend()
+                }
+            
+        }
     }
+    bjcheck()
+}
+function gameend() {
+    console.log(hands.value.player.score, hands.value.dealer.score)
+    setTimeout(() => {
+    if (hands.value.player.score === hands.value.dealer.score) {
+        alert('push, no money change')
+    }
+    else if (hands.value.player.score > hands.value.dealer.score & !bust.value & !blackjack.value) {
+        alert('you win!')
+    }
+    else if(hands.value.player.score<hands.value.dealer.score & !bust.value & !blackjack.value){
+        alert('you win')
+    }
+    else if (bust.value) {
+        if (hands.value.player.score > 21) {
+            alert('you bust, stay under 21!')
+        }
+        else {
+            alert('dealer busted! great job!')
+        }
+    }
+    else if (blackjack.value) {
+        if (hands.value.player.score === 21) {
+            alert('you win with blackjack! 3-2 payout!')
+        }
+        else {
+            alert('dealer has blackjack, lose')
+        }
+        }
+        gamestarted.value = false
+    }, 3000);
+}
+function playerstand() {
+    while (hands.value.dealer.score < 17) {
+    setInterval(() => {
+        dealerhit()  
+
+    }, 1500);
+    }
+    gameend()
 }
 </script>
 
