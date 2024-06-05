@@ -29,7 +29,12 @@ export const whichthing = defineStore('place', {
 })
 export const balancefunc = defineStore('balance', {
   state: () => {
-    return { bal:0}
+    return {
+      bal: 0,
+      winnigs: 0,
+      losses: 0,
+      bets:0,
+    }
   },
   actions: {
     async bala() {
@@ -38,7 +43,10 @@ export const balancefunc = defineStore('balance', {
             .from('accountinformation') //specifies table
             .select("*") //selects all rows
             .eq('id', user.data.user.id) //selects row that contains the user id
-        this.bal = accountinformation[0].balance //updates variables
+      this.bal = accountinformation[0].balance //updates variables
+      this.winnigs = accountinformation[0].total_winnings
+      this.losses = accountinformation[0].total_losses
+      this.bets = accountinformation[0].total_bet
     }
   }
 })

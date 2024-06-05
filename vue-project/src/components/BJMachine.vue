@@ -1,6 +1,9 @@
 <template>
-    <div class="game flex justify-center border-black border-2 w-1/6 m-auto h-1/3 hover:bg-slate-400 " v-if="!gamestarted">
-            <button @click="gamestart">Start Game?</button>
+    <div class="game " v-if="!gamestarted">
+            <button class="flex justify-center border-black border-2 w-1/6 m-auto h-1/3 hover:bg-slate-400 " @click="better" v-if="!sure">Start Game?</button>
+            <label for="" v-if="sure" class="flex justify-center border-black border-2 w-1/6 m-auto h-1/3 hover:bg-slate-400 mb-2">Bet Amount</label>
+            <input type="number" name="" id="" v-if="sure" v-model="bet" class="flex justify-center border-black border-2 w-1/6 m-auto h-1/3 hover:bg-slate-400 mb-5 ">
+            <button @click="gamestart" v-if="sure" class="flex justify-center border-black border-2 w-1/6 m-auto h-1/3 hover:bg-slate-400 ">Start Game!</button>
         </div   >
     <div class="grid grid-rows-7 bg-green-700 bg-cover w-11/12 m-auto">
         
@@ -33,8 +36,12 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { onBeforeMount, ref } from 'vue';
 import { balancefunc } from '@/stores/counter';
+import { supabase } from '@/lib/supabaseClient';
+const balance = balancefunc()
+const bet = ref(0)
+const sure = ref(false)
 const gamestarted = ref(false)
 const cardsdelt = ref(0)
 const bust = ref(false)
@@ -60,6 +67,27 @@ const hands = ref({
     }
    
 })
+const newthings = ref({
+        always: {
+            newtotalbet: balance.bets + bet.value,
+        },
+        onwin: {
+            newbal: balance.bal + bet.value,
+            newwinnings: balance.winnigs + bet.value,
+            blackjackwinnigs: balance.winnigs + bet.value * 1.5,
+            blackjackbal: balance.bal +bet.value*1.5
+        },
+        onloss: {
+            newbal: balance.bal - bet.value,
+            newlosses: balance.losses + bet.value,
+        }
+    })
+balance.bala()
+console.log(balance.bal)
+function better() {
+    bet.value=0
+    sure.value=true
+}
 function deckmaker() {
     deck.value.deck = [];
     for (let i = 0; i < deck.value.cards.length; i++){
@@ -127,20 +155,28 @@ function playerhit() {
     }
 }
 function dealerhit() {
-    let card = deck.value.deck.pop();
-    cardsdelt.value ++
-    hand.value.hand.push(card); 
-    hands.value.dealer.cards.push(hand.value.hand[cardsdelt.value-1].card )
-    console.log(cardsdelt.value)
-    console.log(hand.value.hand[cardsdelt.value-1])
-    hands.value.dealer.score = hands.value.dealer.score + hand.value.hand[cardsdelt.value - 1].score
+        let card = deck.value.deck.pop();
+        cardsdelt.value ++
+        hand.value.hand.push(card); 
+        hands.value.dealer.cards.push(hand.value.hand[cardsdelt.value-1].card )
+        console.log(cardsdelt.value)
+        console.log(hand.value.hand[cardsdelt.value-1])
+        hands.value.dealer.score = hands.value.dealer.score + hand.value.hand[cardsdelt.value - 1].score    
     if (hands.value.dealer.score > 21) {
 
         bust.value = true
         gameend()
     }  
 }
-function gamestart() {
+async function gamestart() {
+    let { data: accountinformation3, error } = await supabase //calls table
+        .from('accountinformation') //specifies table
+        .update({ total_bet:newthings.value.always.newtotalbet }) //updates balance table with sum of values
+        .eq('id', user.data.user.id) //selects which row
+        .select() //returns the value
+    balance.bala()
+    console.log(bet.value)
+    sure.value = false
     hand.value.hand = []
     hand.value.score = 0
     hands.value.player.cards = []
@@ -157,10 +193,7 @@ function gamestart() {
     shuffle()
     deal()
     function bjcheck() {
-
-
-        if (hands.value.player.score === 21 || hands.value.dealer.score === 21) {
-            
+        if (hands.value.player.score === 21 || hands.value.dealer.score === 21) {    
                 if (hands.value.player.score === 21) {
                     blackjack.value = true
                     gameend()
@@ -169,48 +202,70 @@ function gamestart() {
                     blackjack.value = true
                     gameend()
                 }
-            
         }
     }
     bjcheck()
 }
-function gameend() {
+async function gameend() {
+  
     console.log(hands.value.player.score, hands.value.dealer.score)
-    setTimeout(() => {
+    setTimeout(async () => {
     if (hands.value.player.score === hands.value.dealer.score) {
         alert('push, no money change')
     }
     else if (hands.value.player.score > hands.value.dealer.score & !bust.value & !blackjack.value) {
         alert('you win!')
+        let { data: accountinformation3, error } = await supabase //calls table
+        .from('accountinformation') //specifies table
+        .update({ balance: newthings.value.onwin.newbal , total_winnings: newthings.value.onwin.newbal }) //updates balance table with sum of values
+        .eq('id', user.data.user.id) //selects which row
+        .select() //returns the value
     }
     else if(hands.value.player.score<hands.value.dealer.score & !bust.value & !blackjack.value){
-        alert('you win')
+        alert('you lose')
+        let { data: accountinformation3, error } = await supabase //calls table
+        .from('accountinformation') //specifies table
+        .update({ balance: newthings.value.onloss.newbal , total_losses: newthings.value.onloss.newlosses }) //updates balance table with sum of values
+        .eq('id', user.data.user.id) //selects which row
+        .select() //returns the value
     }
     else if (bust.value) {
         if (hands.value.player.score > 21) {
             alert('you bust, stay under 21!')
+            let { data: accountinformation3, error } = await supabase //calls table
+            .from('accountinformation') //specifies table
+            .update({ balance: newthings.value.onloss.newbal , total_losses: newthings.value.onloss.newlosses }) //updates balance table with sum of values
+            .eq('id', user.data.user.id) //selects which row
+            .select() //returns the value
         }
         else {
             alert('dealer busted! great job!')
+            let { data: accountinformation3, error } = await supabase //calls table
+            .from('accountinformation') //specifies table
+            .update({ balance: newthings.value.onwin.newbal , total_winnings: newthings.value.onwin.newbal }) //updates balance table with sum of values
+            .eq('id', user.data.user.id) //selects which row
+            .select() //returns the value
         }
     }
     else if (blackjack.value) {
         if (hands.value.player.score === 21) {
             alert('you win with blackjack! 3-2 payout!')
+            let { data: accountinformation3, error } = await supabase //calls table
+            .from('accountinformation') //specifies table
+            .update({ balance: newthings.value.onwin.newbal , total_winnings: newthings.value.onwin.newbal }) //updates balance table with sum of values
+            .eq('id', user.data.user.id) //selects which row
+            .select() //returns the value
         }
         else {
             alert('dealer has blackjack, lose')
         }
         }
         gamestarted.value = false
-    }, 3000);
+    }, 2000);
 }
 function playerstand() {
     while (hands.value.dealer.score < 17) {
-    setInterval(() => {
-        dealerhit()  
-
-    }, 1500);
+    dealerhit()
     }
     gameend()
 }
