@@ -42,7 +42,15 @@ const where = whichthing()
 const balance = balancefunc()
 const d = new Date();
 let day = d.getDate();  
-console.log(day)
+let realday = ''
+if (day.toString().length < 2) {
+  realday = day.toString()
+  realday = '0'+realday
+}
+else {
+  realday = day.toString()
+}
+console.log(realday)
 async function signout() {
   await supabase.auth.signOut()
   login.changeN()
@@ -63,7 +71,7 @@ async function test() {
     console.log(user)
     let date = user.last_sign_in_at.slice(8, 10)
     console.log(date)
-    if (date !== day.toString()) {
+    if (date !== realday) {
       await supabase.auth.signOut()
       router.push({path: '/'})
     }
