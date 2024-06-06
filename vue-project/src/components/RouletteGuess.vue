@@ -1,11 +1,10 @@
 <template>
   <div>
     <div class="buttons">
-      <button @click="reset">Play</button>
-      <button @click="guess(1)" v-if="balaalala >= 100">1</button>
-      <button @click="guess(2)" v-if="balaalala >= 100">2</button>
-      <button @click="guess(3)" v-if="balaalala >= 100">3</button>
-      <button @click="guess(4)" v-if="balaalala >= 100">4</button>
+      <button id="one" @click="guess(1)" v-if="balaalala >= 100">1</button>
+      <button id="two" @click="guess(2)" v-if="balaalala >= 100">2</button>
+      <button id="three"@click="guess(3)" v-if="balaalala >= 100">3</button>
+      <button id="four"@click="guess(4)" v-if="balaalala >= 100">4</button>
       <button class="buttn" v-if="balaalala < 100">
         <router-link to="/bank">Can't Afford, Add More Money In Bank</router-link>
       </button>
@@ -22,7 +21,7 @@ import router from "@/router";
 export default {
   data() {
     return {
-      correctCorner: null,
+      correctSquare: null,
       message: "",
       balaalala: 0, 
       gameOver: false, 
@@ -30,19 +29,19 @@ export default {
   },
   methods: {
     async reset() {
-      this.correctCorner = Math.floor(Math.random() * 4) + 1;
+      this.correctSquare = Math.floor(Math.random() * 4) + 1;
       this.message = "";
       this.gameOver = false;
     },
-    async guess(corner) {
+    async guess(Square) {
       if (this.gameOver) {
         this.reset();
         return;
       }
-      if (corner === this.correctCorner) {
+      if (Square === this.correctSquare) {
         this.message = "Congratulations, you win $100!";
       } else {
-        this.message = "Sorry, wrong corner! -$100";
+        this.message = "Sorry, wrong Square! -$100";
       }
       this.gameOver = true; 
     
@@ -60,7 +59,7 @@ export default {
       
       
       console.log(this.balaalala);
-      if (corner === this.correctCorner) {
+      if (Square === this.correctSquare) {
         const winValue = 100;
         rlmoney.value = accountinfo2[0].balance + winValue;
         console.log(rlmoney.value);
@@ -75,7 +74,7 @@ export default {
         this.balaalala = accountinformation3[0].balance;
         console.log(this.balaalala);
       } else {
-        this.message = "Sorry, wrong corner! -$100";
+        this.message = "Sorry, wrong Square! -$100";
         rlmoney.value = bal.value - 100; //reduce values
         console.log(rlmoney.value)
         let { data: accountinformation, error } = await supabase //calls table
@@ -105,27 +104,84 @@ export default {
 };
 </script>
 
-
 <style>
 .buttons {
   display: flex;
   flex-direction: column;
   align-items: center;
+  display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .buttons button {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
   margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
 }
 
+.buttn {
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+  background-color: #f44336;
+  color: white;
+}
+
+.buttn:hover {
+  background-color: #d32f2f;
+  transform: scale(1.05);
+}
+
+.buttn a {
+  color: white;
+  text-decoration: none;
+}
+
+#one{
+  background-color: #f44336;
+}
+
+#two{
+  background-color: black;
+color: aliceblue;
+}
+#three{
+  background-color: #f44336;
+}
+#four{
+  background-color: black;
+color: aliceblue;
+}
 .message {
   margin-top: 20px;
   font-size: 20px;
   font-weight: bold;
+  color: #333;
+  align-items: center;
+  display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+
 }
 
 .balance {
   margin-top: 20px;
   font-size: 18px;
   font-weight: bold;
+  color: #333;
 }
+
 </style>
