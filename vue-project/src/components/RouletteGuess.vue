@@ -24,7 +24,7 @@ export default {
     return {
       correctCorner: null,
       message: "",
-      balance: 0, 
+      balaalala: 0, 
       gameOver: false, 
     };
   },
@@ -55,31 +55,20 @@ export default {
         .select("*") //selects all rows
         .eq("id", user.data.user.id); //selects row that contains the user id
       bal.value = accountinfo2[0].balance; //updates variables
-      const rlmoney = ref(bal.value - reduce.value); //reduce values
+      const rlmoney = ref(); //reduce values
       const bets = ref(accountinfo2[0].total_bet + reduce.value);
-      let { data: accountinformation, error } = await supabase //calls table
-        .from("accountinformation") //specifies table
-        .update({
-          balance: rlmoney.value,
-          total_bet: bets.value,
-          total_losses: bets.value,
-        }) //updates balance table with sum of values
-        .eq("id", user.data.user.id) //selects which row
-        .select(); //returns the value
-      console.log(accountinformation[0]);
-      console.log(accountinformation[0].balance);
-      this.balaalala = accountinformation[0].balance;
+      
+      
       console.log(this.balaalala);
       if (corner === this.correctCorner) {
-        this.message = `You win $${winValue}!`;
-        const winValue = this.data2[this.slot1].value;
-        rlmoney.value = accountinformation[0].balance + winValue;
+        const winValue = 100;
+        rlmoney.value = accountinfo2[0].balance + winValue;
         console.log(rlmoney.value);
         const wins = ref(accountinfo2[0].total_winnings + winValue);
         console.log(wins.value);
         let { data: accountinformation3, error } = await supabase //calls table
           .from("accountinformation") //specifies table
-          .update({ balance: rlmoney.value, total_winnings: wins.value }) //updates balance table with sum of values
+          .update({ balance: rlmoney.value, total_winnings: wins.value,total_bet: bets.value, }) //updates balance table with sum of values
           .eq("id", user.data.user.id) //selects which row
           .select(); //returns the value
         console.log(accountinformation3[0]);
@@ -87,6 +76,16 @@ export default {
         console.log(this.balaalala);
       } else {
         this.message = "Sorry, wrong corner! -$100";
+        rlmoney.value = bal.value - 100; //reduce values
+        console.log(rlmoney.value)
+        let { data: accountinformation, error } = await supabase //calls table
+          .from("accountinformation") //specifies table
+          .update({balance: rlmoney.value ,total_bet: bets.value,total_losses: bets.value, }) //updates balance table with sum of values
+          .select("*") //returns the value
+          .eq("id", user.data.user.id) //selects which row
+  
+          console.log(accountinformation[0])
+          this.balaalala = accountinformation[0].balance;
       }
       balance.bala();
     },

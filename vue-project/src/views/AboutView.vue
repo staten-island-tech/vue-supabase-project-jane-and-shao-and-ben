@@ -7,6 +7,9 @@
 
 <script setup>
 import testtest from '@/components/testtest.vue';
+import { balancefunc } from '@/stores/counter';
+const balance = balancefunc()
+balance.bala()
 </script>
 
 <style lang="scss" scoped>
