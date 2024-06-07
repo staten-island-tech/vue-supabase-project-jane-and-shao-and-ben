@@ -23,7 +23,7 @@
         class="inline-flex items-center bg-gray-100 border-0 py-1 px-3 focus:outline-none hover:bg-gray-200 rounded text-xl mt-4 md:mt-0"
         @click="signout"
       >
-        Sign Out
+        Sign Out.
         <svg
           fill="none"
           stroke="currentColor"
